@@ -1,0 +1,33 @@
+package cn.cloudcat.user.portal.service;
+
+import cn.cloudcat.user.common.constant.FileType;
+import cn.cloudcat.user.common.constant.KnowledgeBaseType;
+import cn.cloudcat.user.portal.entity.KnowledgeDocument;
+
+import java.io.File;
+import java.io.InputStream;
+
+/**
+ * 文件处理服务 - 负责文档转换处理
+ *
+ * @author Kang
+ * @since 2026-06-02
+ */
+public interface FileProcessService {
+    /**
+     * 处理文档转换 - Markdown 格式
+     * 1. 从 MinIO 下载文件
+     * 2. 调用文档解析接口获取md/zip
+     * 3. 转换后的文档保存在minio上
+     * 3. 更新文档状态和转换后的 URL
+     *
+     * @param document 文档对象
+     */
+    public void processDocument(KnowledgeDocument document, InputStream inputStream);
+
+    /**
+     * 判断是否支持该文件
+     */
+    boolean supports(FileType fileType, KnowledgeBaseType knowledgeBaseType);
+}
+

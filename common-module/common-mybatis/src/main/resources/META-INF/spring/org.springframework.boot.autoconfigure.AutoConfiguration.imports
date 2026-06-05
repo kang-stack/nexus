@@ -1,0 +1,2 @@
+cn.cloudcat.common.mybatis.config.MybatisPlusAutoConfiguration
+cn.cloudcat.common.mybatis.config.MyMetaObjectHandler

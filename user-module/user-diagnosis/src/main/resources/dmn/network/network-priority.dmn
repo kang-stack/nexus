@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="network_priority_defs"
+             name="Network Priority"
+             namespace="http://cloudcat.cn/dmn/network">
+
+  <decision id="network_priority" name="Network Priority">
+    <decisionTable id="network_priority_table" hitPolicy="FIRST">
+      <input id="in_not_activated" label="hasNotActivated">
+        <inputExpression typeRef="boolean"><text>hasNotActivated</text></inputExpression>
+      </input>
+      <input id="in_not_realname" label="hasNotRealname">
+        <inputExpression typeRef="boolean"><text>hasNotRealname</text></inputExpression>
+      </input>
+      <input id="in_service_expired" label="hasServiceExpired">
+        <inputExpression typeRef="boolean"><text>hasServiceExpired</text></inputExpression>
+      </input>
+      <input id="in_data_exhausted" label="hasDataExhausted">
+        <inputExpression typeRef="boolean"><text>hasDataExhausted</text></inputExpression>
+      </input>
+      <input id="in_offline" label="hasOffline">
+        <inputExpression typeRef="boolean"><text>hasOffline</text></inputExpression>
+      </input>
+      <input id="in_signal_weak" label="hasSignalWeak">
+        <inputExpression typeRef="boolean"><text>hasSignalWeak</text></inputExpression>
+      </input>
+
+      <output id="out_primary" label="primaryRootCause" name="primaryRootCause" typeRef="string"/>
+      <output id="out_label" label="label" name="label" typeRef="string"/>
+
+      <rule id="pri_not_activated">
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_ACTIVATED"</text></outputEntry>
+        <outputEntry><text>"设备未激活"</text></outputEntry>
+      </rule>
+      <rule id="pri_not_realname">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_REALNAME"</text></outputEntry>
+        <outputEntry><text>"未完成实名"</text></outputEntry>
+      </rule>
+      <rule id="pri_service_expired">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"SERVICE_EXPIRED"</text></outputEntry>
+        <outputEntry><text>"套餐到期"</text></outputEntry>
+      </rule>
+      <rule id="pri_data_exhausted">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"DATA_EXHAUSTED"</text></outputEntry>
+        <outputEntry><text>"流量用完"</text></outputEntry>
+      </rule>
+      <rule id="pri_offline">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"OFFLINE"</text></outputEntry>
+        <outputEntry><text>"设备离线"</text></outputEntry>
+      </rule>
+      <rule id="pri_signal_weak">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <outputEntry><text>"SIGNAL_WEAK"</text></outputEntry>
+        <outputEntry><text>"信号较弱"</text></outputEntry>
+      </rule>
+      <rule id="pri_unknown">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"UNKNOWN"</text></outputEntry>
+        <outputEntry><text>"原因待查"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

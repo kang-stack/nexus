@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="refund_finding_defs"
+             name="Refund Finding"
+             namespace="http://cloudcat.cn/dmn/refund">
+
+  <decision id="refund_finding" name="Refund Finding">
+    <decisionTable id="refund_finding_table" hitPolicy="FIRST">
+      <input id="input_refund_status" label="区分退款工单状态">
+        <inputExpression typeRef="string"><text>区分退款工单状态</text></inputExpression>
+      </input>
+      <input id="input_activation" label="激活状态">
+        <inputExpression typeRef="string"><text>激活状态</text></inputExpression>
+      </input>
+      <input id="input_realname" label="实名状态">
+        <inputExpression typeRef="string"><text>实名状态</text></inputExpression>
+      </input>
+
+      <output id="output_finding_code" label="findingCode" name="findingCode" typeRef="string"/>
+      <output id="output_level" label="level" name="level" typeRef="string"/>
+      <output id="output_message" label="message" name="message" typeRef="string"/>
+
+      <rule id="rule_refund_processing">
+        <inputEntry><text>"处理中"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"REFUND_PROCESSING"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"退款工单处理中"</text></outputEntry>
+      </rule>
+      <rule id="rule_refund_done">
+        <inputEntry><text>"已完成"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"REFUND_DONE"</text></outputEntry>
+        <outputEntry><text>"MEDIUM"</text></outputEntry>
+        <outputEntry><text>"退款已完成"</text></outputEntry>
+      </rule>
+      <rule id="rule_refund_no_ticket">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"REFUND_NO_TICKET"</text></outputEntry>
+        <outputEntry><text>"MEDIUM"</text></outputEntry>
+        <outputEntry><text>"暂无退款工单记录"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

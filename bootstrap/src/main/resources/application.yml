@@ -1,0 +1,40 @@
+server:
+  port: 8899
+
+spring:
+  profiles:
+    active: dev
+  config:
+    import: classpath:application-ai.yml
+  application:
+    name: icc-customer-agent
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    placeholder-replacement: false
+    # 独立 JDBC 连接跑迁移，避免 Druid 将 performance_schema 无权限(1142)判为致命并 discard 连接
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: ${spring.datasource.driver-class-name}
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+jwt:
+  access-token-validity-ms: 86400000
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:- } --- [%15.15t] [%X{turnId:--}][%X{convId:--}] %-40.40logger{39} : %m%n"

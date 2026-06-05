@@ -1,0 +1,32 @@
+CREATE TABLE acc_user_account (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+    user_id VARCHAR(64) NOT NULL COMMENT '用户业务ID（JWT sub）',
+    username VARCHAR(64) NOT NULL COMMENT '登录用户名',
+    password VARCHAR(256) NOT NULL COMMENT '密码（BCrypt加密）',
+    nickname VARCHAR(64) DEFAULT NULL COMMENT '昵称',
+    phone VARCHAR(20) DEFAULT NULL COMMENT '手机号',
+    avatar VARCHAR(512) DEFAULT NULL COMMENT '头像URL',
+    status VARCHAR(16) NOT NULL DEFAULT 'active' COMMENT '状态：active/disabled',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    lock_version INT NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
+    deleted TINYINT NOT NULL DEFAULT 0 COMMENT '逻辑删除：0-未删除，1-已删除',
+    UNIQUE KEY uk_user_id (user_id),
+    UNIQUE KEY uk_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='C端用户账号表';
+
+CREATE TABLE acc_user_admin (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+    admin_id VARCHAR(64) NOT NULL COMMENT '管理员业务ID',
+    username VARCHAR(64) NOT NULL COMMENT '登录用户名',
+    password VARCHAR(256) NOT NULL COMMENT '密码（BCrypt加密）',
+    real_name VARCHAR(64) DEFAULT NULL COMMENT '真实姓名',
+    role VARCHAR(32) NOT NULL DEFAULT 'ADMIN' COMMENT '角色：SUPER_ADMIN/ADMIN/OPERATOR',
+    status VARCHAR(16) NOT NULL DEFAULT 'active' COMMENT '状态：active/disabled',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    lock_version INT NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
+    deleted TINYINT NOT NULL DEFAULT 0 COMMENT '逻辑删除：0-未删除，1-已删除',
+    UNIQUE KEY uk_admin_id (admin_id),
+    UNIQUE KEY uk_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运营管理员账号表';

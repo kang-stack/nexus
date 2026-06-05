@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="device_priority_defs"
+             name="Device Priority"
+             namespace="http://cloudcat.cn/dmn/device">
+
+  <decision id="device_priority" name="Device Priority">
+    <decisionTable id="device_priority_table" hitPolicy="FIRST">
+      <input id="in_not_activated" label="hasNotActivated">
+        <inputExpression typeRef="boolean"><text>hasNotActivated</text></inputExpression>
+      </input>
+      <input id="in_not_realname" label="hasNotRealname">
+        <inputExpression typeRef="boolean"><text>hasNotRealname</text></inputExpression>
+      </input>
+      <input id="in_service_expired" label="hasServiceExpired">
+        <inputExpression typeRef="boolean"><text>hasServiceExpired</text></inputExpression>
+      </input>
+      <input id="in_data_exhausted" label="hasDataExhausted">
+        <inputExpression typeRef="boolean"><text>hasDataExhausted</text></inputExpression>
+      </input>
+      <input id="in_offline" label="hasOffline">
+        <inputExpression typeRef="boolean"><text>hasOffline</text></inputExpression>
+      </input>
+      <input id="in_signal_weak" label="hasSignalWeak">
+        <inputExpression typeRef="boolean"><text>hasSignalWeak</text></inputExpression>
+      </input>
+
+      <output id="out_primary" label="primaryRootCause" name="primaryRootCause" typeRef="string"/>
+      <output id="out_label" label="label" name="label" typeRef="string"/>
+
+      <rule id="pri_not_activated">
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_ACTIVATED"</text></outputEntry>
+        <outputEntry><text>"设备未激活"</text></outputEntry>
+      </rule>
+      <rule id="pri_not_realname">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_REALNAME"</text></outputEntry>
+        <outputEntry><text>"未完成实名"</text></outputEntry>
+      </rule>
+      <rule id="pri_offline">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"OFFLINE"</text></outputEntry>
+        <outputEntry><text>"设备离线"</text></outputEntry>
+      </rule>
+      <rule id="pri_unknown">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"UNKNOWN"</text></outputEntry>
+        <outputEntry><text>"设备状态正常"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

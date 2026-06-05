@@ -1,0 +1,192 @@
+# =============================================
+# AI / LLM / RAG 配置（由 application.yml import 引入）
+# =============================================
+
+management:
+  health:
+    elasticsearch:
+      enabled: ${elasticsearch.enabled:true}
+
+chat:
+  progress:
+    enabled: true
+
+icc:
+  cs:
+    dialogue:
+      llm-turn-policy-enabled: false
+  rag:
+    query-rewrite-enabled: true
+  model:
+    primary-provider: deepseek
+    fallback-enabled: true
+    providers:
+      - name: deepseek
+        base-url: https://api.deepseek.com/v1
+        api-key: ${DEEPSEEK_API_KEY:sk-c3ce9788fa424deb9da34faaa7fa5f40}
+        model-name: deepseek-v4-pro
+        priority: 1
+        custom-parameters:
+          thinking:
+            type: enabled
+          reasoning_effort: high
+      - name: qwen
+        base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+        api-key: ${QWEN_API_KEY:sk-b0c24b2f73b0489cbeb58de2cd3849e3}
+        model-name: qwen3.6-plus
+        priority: 2
+      - name: openai
+        base-url: https://api.openai.com/v1
+        api-key: ${OPENAI_API_KEY:your-openai-api-key}
+        model-name: gpt-4o
+        priority: 3
+      - name: ollama
+        base-url: http://localhost:11434/v1
+        api-key: ollama
+        model-name: qwen2.5:7b
+        priority: 4
+    fast:
+      default-model: deepseek-v4-flash
+      task-mapping:
+        intent-recognition: deepseek-v4-flash
+        query-rewrite: deepseek-v4-flash
+        title-summary: deepseek-v4-flash
+      models:
+        - model-name: deepseek-v4-flash
+          provider: deepseek
+          priority: 1
+        - model-name: qwen3.6-flash
+          provider: qwen
+          priority: 2
+  reranker:
+    default: qwen3-rerank
+    models:
+      - name: qwen3-rerank
+        type: dashscope
+        api-key: ${QWEN_API_KEY:your-qwen-api-key}
+        model-name: qwen3-rerank
+        priority: 1
+
+elasticsearch:
+  enabled: false
+  host: https://43.139.208.113:9200
+  username: ${ES_USERNAME:elastic}
+  password: ${ES_PASSWORD:HpMK1LrXVmc_7SKkIan6}
+  ssl-verification-enabled: false
+  base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model-name: text-embedding-v4
+  api-key: ${QWEN_API_KEY:sk-b0c24b2f73b0489cbeb58de2cd3849e3}
+  dimensions: 1024
+
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${DEEPSEEK_API_KEY:sk-c3ce9788fa424deb9da34faaa7fa5f40}
+      model-name: deepseek-v4-pro
+      base-url: https://api.deepseek.com/v1
+      log-requests: false
+      log-responses: false
+    streaming-chat-model:
+      api-key: ${DEEPSEEK_API_KEY:sk-c3ce9788fa424deb9da34faaa7fa5f40}
+      model-name: deepseek-v4-pro
+      base-url: https://api.deepseek.com/v1
+      log-requests: false
+      log-responses: false
+
+file:
+  parse:
+    api:
+      url: http://localhost:8000
+
+---
+# 本地开发覆盖
+spring.config.activate.on-profile: dev
+
+icc:
+  rag:
+    query-rewrite-enabled: false
+
+---
+# 生产环境覆盖（通过环境变量注入，无本地默认密钥）
+spring.config.activate.on-profile: pro
+
+icc:
+  model:
+    primary-provider: deepseek
+    fallback-enabled: true
+    providers:
+      - name: deepseek
+        base-url: https://api.deepseek.com/v1
+        api-key: ${DEEPSEEK_API_KEY}
+        model-name: deepseek-v4-pro
+        priority: 1
+        custom-parameters:
+          thinking:
+            type: enabled
+          reasoning_effort: high
+      - name: qwen
+        base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+        api-key: ${QWEN_API_KEY}
+        model-name: qwen-max-latest
+        priority: 2
+      - name: openai
+        base-url: https://api.openai.com/v1
+        api-key: ${OPENAI_API_KEY}
+        model-name: gpt-4o
+        priority: 3
+      - name: ollama
+        base-url: http://localhost:11434/v1
+        api-key: ollama
+        model-name: qwen2.5:7b
+        priority: 4
+    fast:
+      default-model: ${FAST_MODEL_DEFAULT:deepseek-v4-flash}
+      task-mapping:
+        intent-recognition: ${FAST_MODEL_INTENT:deepseek-v4-flash}
+        query-rewrite: ${FAST_MODEL_REWRITE:deepseek-v4-flash}
+        title-summary: ${FAST_MODEL_TITLE:deepseek-v4-flash}
+      models:
+        - model-name: ${FAST_MODEL_DEEPSEEK:deepseek-v4-flash}
+          provider: deepseek
+          priority: 1
+        - model-name: ${FAST_MODEL_QWEN:qwen3.6-flash}
+          provider: qwen
+          priority: 2
+  reranker:
+    default: ${RERANKER_DEFAULT:qwen3-rerank}
+    models:
+      - name: qwen3-rerank
+        type: dashscope
+        api-key: ${QWEN_API_KEY}
+        model-name: ${RERANKER_QWEN_MODEL:qwen3-rerank}
+        priority: 1
+
+elasticsearch:
+  enabled: ${ES_ENABLED:true}
+  host: ${ES_HOST:http://127.0.0.1:9200}
+  username: ${ES_USERNAME:}
+  password: ${ES_PASSWORD:}
+  base-url: https://api.deepseek.com/v1
+  model-name: text-embedding-v4
+  api-key: ${DEEPSEEK_API_KEY}
+  dimensions: 1024
+
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${DEEPSEEK_API_KEY}
+      model-name: deepseek-v4-pro
+      base-url: https://api.deepseek.com/v1
+      log-requests: false
+      log-responses: false
+    streaming-chat-model:
+      api-key: ${DEEPSEEK_API_KEY}
+      model-name: deepseek-v4-pro
+      base-url: https://api.deepseek.com/v1
+      log-requests: false
+      log-responses: false
+
+file:
+  parse:
+    api:
+      url: ${MINERU_API_URL:http://localhost:8000}

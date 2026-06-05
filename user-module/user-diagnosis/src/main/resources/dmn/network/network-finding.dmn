@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="network_finding_defs"
+             name="Network Finding"
+             namespace="http://cloudcat.cn/dmn/network">
+
+  <decision id="network_finding" name="Network Finding">
+    <decisionTable id="network_finding_table" hitPolicy="COLLECT">
+      <input id="input_activation" label="激活状态">
+        <inputExpression typeRef="string"><text>激活状态</text></inputExpression>
+      </input>
+      <input id="input_realname" label="实名状态">
+        <inputExpression typeRef="string"><text>实名状态</text></inputExpression>
+      </input>
+      <input id="input_device_status" label="设备状态">
+        <inputExpression typeRef="string"><text>设备状态</text></inputExpression>
+      </input>
+      <input id="input_online" label="在线状态">
+        <inputExpression typeRef="string"><text>在线状态</text></inputExpression>
+      </input>
+      <input id="input_signal" label="信号值">
+        <inputExpression typeRef="string"><text>信号值</text></inputExpression>
+      </input>
+
+      <output id="output_finding_code" label="findingCode" name="findingCode" typeRef="string"/>
+      <output id="output_level" label="level" name="level" typeRef="string"/>
+      <output id="output_message" label="message" name="message" typeRef="string"/>
+
+      <rule id="rule_not_activated">
+        <inputEntry><text>"未激活"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_ACTIVATED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"设备未激活"</text></outputEntry>
+      </rule>
+
+      <rule id="rule_not_realname">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"未实名"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_REALNAME"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"未完成实名认证"</text></outputEntry>
+      </rule>
+
+      <rule id="rule_service_expired">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"服务到期"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"SERVICE_EXPIRED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"套餐已到期"</text></outputEntry>
+      </rule>
+
+      <rule id="rule_data_exhausted">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"流量用完"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"DATA_EXHAUSTED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"套餐流量已用完"</text></outputEntry>
+      </rule>
+
+      <rule id="rule_offline">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"离线"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"OFFLINE"</text></outputEntry>
+        <outputEntry><text>"MEDIUM"</text></outputEntry>
+        <outputEntry><text>"设备离线"</text></outputEntry>
+      </rule>
+
+      <rule id="rule_signal_weak">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"信号差"</text></inputEntry>
+        <outputEntry><text>"SIGNAL_WEAK"</text></outputEntry>
+        <outputEntry><text>"MEDIUM"</text></outputEntry>
+        <outputEntry><text>"当前信号较弱"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

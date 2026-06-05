@@ -1,0 +1,29 @@
+---
+description: 项目编码风格——注释与类型声明约定
+alwaysApply: true
+---
+
+# 编码风格约定
+
+在本仓库编写或修改代码时，必须遵守以下约定。
+
+## 注释
+
+- 新增或改动的代码应配有**有意义的中文或英文注释**，说明非显而易见的业务逻辑、设计意图或边界条件。
+- 不要为自解释的一行代码堆砌废话注释；重点放在类、公共方法、复杂分支和跨模块协作处。
+- Java：公共类、Controller、Service 核心方法建议写 Javadoc 或块注释；Vue/JS：复杂 composable、状态机、API 封装处写简短说明。
+- **Flyway DDL**：`CREATE TABLE` 必须为**整张表**及**每个字段**写 MySQL `COMMENT`（表尾 `COMMENT='…'` + 列级 `COMMENT '…'`），与实体字段 JavaDoc 保持一致；不得提交无注释的建表脚本。
+
+## 前端（frontend）— 仅 JavaScript
+
+- **禁止 TypeScript**：不得新增 `.ts` / `.tsx` 文件，不得使用 `lang="ts"`、`<script setup lang="ts">`。
+- **禁止**引入 `typescript`、`vue-tsc`、`@vue/tsconfig` 等 TS 工具链；构建仅用 `vite build`。
+- 新代码统一使用 **`.js`**（路由、store、api、utils）和 **`<script setup>` 无 lang 或 `lang="js"`** 的 Vue SFC。
+- Pinia store、API 模块、工具函数均用 JSDoc（`@param` / `@returns`）补充类型提示，**不要**迁回 TS。
+- 路径别名 `@/` 由 `vite.config.js` + `jsconfig.json` 提供，勿添加 `tsconfig.json`。
+
+## 类型与 import
+
+- **禁止**在变量、字段、方法参数、返回值等声明处使用全限定类名（FQN），例如 `java.util.List<com.example.Foo>`、`org.springframework.http.ResponseEntity<cn.xxx.Bar>`。
+- 应通过文件顶部的 `import` 引入类型，声明处只写短类名：`List<Foo>`、`ResponseEntity<Bar>`。
+- 仅当存在同名类冲突时，可对其中一个使用 FQN 或 `import ... as`（按语言习惯），并加一行注释说明原因。

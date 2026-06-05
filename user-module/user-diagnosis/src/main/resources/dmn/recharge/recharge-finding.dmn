@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="recharge_finding_defs"
+             name="Recharge Finding"
+             namespace="http://cloudcat.cn/dmn/recharge">
+
+  <decision id="recharge_finding" name="Recharge Finding">
+    <decisionTable id="recharge_finding_table" hitPolicy="COLLECT">
+      <input id="input_activation" label="激活状态">
+        <inputExpression typeRef="string"><text>激活状态</text></inputExpression>
+      </input>
+      <input id="input_realname" label="实名状态">
+        <inputExpression typeRef="string"><text>实名状态</text></inputExpression>
+      </input>
+      <input id="input_device_status" label="设备状态">
+        <inputExpression typeRef="string"><text>设备状态</text></inputExpression>
+      </input>
+      <input id="input_online" label="在线状态">
+        <inputExpression typeRef="string"><text>在线状态</text></inputExpression>
+      </input>
+      <input id="input_signal" label="信号值">
+        <inputExpression typeRef="string"><text>信号值</text></inputExpression>
+      </input>
+
+      <output id="output_finding_code" label="findingCode" name="findingCode" typeRef="string"/>
+      <output id="output_level" label="level" name="level" typeRef="string"/>
+      <output id="output_message" label="message" name="message" typeRef="string"/>
+
+      <rule id="rule_not_activated">
+        <inputEntry><text>"未激活"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_ACTIVATED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"设备未激活，暂无法充值"</text></outputEntry>
+      </rule>
+      <rule id="rule_not_realname">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"未实名"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_REALNAME"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"请先完成实名认证后再充值"</text></outputEntry>
+      </rule>
+      <rule id="rule_service_expired">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"服务到期"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"SERVICE_EXPIRED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"套餐已到期，建议续费充值"</text></outputEntry>
+      </rule>
+      <rule id="rule_data_exhausted">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"流量用完"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"DATA_EXHAUSTED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"流量已用完，可购买加油包"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

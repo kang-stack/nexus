@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="device_finding_defs"
+             name="Device Finding"
+             namespace="http://cloudcat.cn/dmn/device">
+
+  <decision id="device_finding" name="Device Finding">
+    <decisionTable id="device_finding_table" hitPolicy="COLLECT">
+      <input id="input_activation" label="激活状态">
+        <inputExpression typeRef="string"><text>激活状态</text></inputExpression>
+      </input>
+      <input id="input_realname" label="实名状态">
+        <inputExpression typeRef="string"><text>实名状态</text></inputExpression>
+      </input>
+      <input id="input_device_status" label="设备状态">
+        <inputExpression typeRef="string"><text>设备状态</text></inputExpression>
+      </input>
+      <input id="input_online" label="在线状态">
+        <inputExpression typeRef="string"><text>在线状态</text></inputExpression>
+      </input>
+
+      <output id="output_finding_code" label="findingCode" name="findingCode" typeRef="string"/>
+      <output id="output_level" label="level" name="level" typeRef="string"/>
+      <output id="output_message" label="message" name="message" typeRef="string"/>
+
+      <rule id="rule_not_activated">
+        <inputEntry><text>"未激活"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_ACTIVATED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"设备未激活"</text></outputEntry>
+      </rule>
+      <rule id="rule_not_realname">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"未实名"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"NOT_REALNAME"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"未完成实名认证"</text></outputEntry>
+      </rule>
+      <rule id="rule_partial_realname">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"部分实名"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"PARTIAL_REALNAME"</text></outputEntry>
+        <outputEntry><text>"MEDIUM"</text></outputEntry>
+        <outputEntry><text>"实名认证未完成"</text></outputEntry>
+      </rule>
+      <rule id="rule_offline">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"离线"</text></inputEntry>
+        <outputEntry><text>"OFFLINE"</text></outputEntry>
+        <outputEntry><text>"MEDIUM"</text></outputEntry>
+        <outputEntry><text>"设备离线"</text></outputEntry>
+      </rule>
+      <rule id="rule_disabled">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>"设备禁用"</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"DEVICE_DISABLED"</text></outputEntry>
+        <outputEntry><text>"HIGH"</text></outputEntry>
+        <outputEntry><text>"设备已被禁用"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

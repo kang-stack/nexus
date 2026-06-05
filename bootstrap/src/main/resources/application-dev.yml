@@ -1,0 +1,109 @@
+# =============================================
+# Dev Profile - 本地开发环境中间件配置
+# =============================================
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://gz-cdb-mj4vhq1x.sql.tencentcdb.com:23048/icc_cs?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: boss_m
+    password: w@boss#2021
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initial-size: 5
+    min-idle: 5
+    max-active: 20
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connection-size: 20
+    filters: stat,wall
+    connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=2000
+    filter:
+      stat:
+        enabled: true
+        db-type: mysql
+        log-slow-sql: false
+        slow-sql-millis: 2000
+        merge-sql: true
+      wall:
+        enabled: true
+        db-type: mysql
+    stat-view-servlet:
+      enabled: true
+      url-pattern: /druid/*
+      login-username: admin
+      login-password: icc_admin_2024
+  data:
+    redis:
+      host: gz-crs-8s2e89al.sql.tencentcdb.com
+      port: 27501
+      password: r@boss#2026
+  redis:
+    redisson:
+      config: |
+        singleServerConfig:
+          idleConnectionTimeout: 10000
+          connectTimeout: 10000
+          timeout: 3000
+          retryAttempts: 3
+          retryInterval: 1500
+          subscriptionsPerConnection: 5
+          password: "r@boss#2026"
+          address: "redis://gz-crs-8s2e89al.sql.tencentcdb.com:27501"
+          subscriptionConnectionMinimumIdleSize: 1
+          subscriptionConnectionPoolSize: 50
+          connectionMinimumIdleSize: 24
+          connectionPoolSize: 64
+          database: 6
+          dnsMonitoringInterval: 5000
+        threads: 16
+        nettyThreads: 32
+        codec: !<org.redisson.codec.JsonJacksonCodec> {}
+        transportMode: "NIO"
+
+# MyBatis-Plus：dev 不打印 SQL（勿留空的 configuration 节点，会导致启动绑定失败）
+# 需要调试 SQL 时临时添加：
+# mybatis-plus:
+#   configuration:
+#     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  secret: Y2xvdWQtY2F0LWludGVsbGlnZW50LXdpZmktY3Mtc2VjcmV0LWtleS0yMDI0LXByb2Q=
+
+minio:
+  url: http://43.139.208.113:9000
+  accessKey: admin
+  secretKey: ykm8u-OSug*6DQ9
+  bucketName: icc-documents
+  endpoint: http://43.139.208.113:9000
+
+xxl:
+  job:
+    enabled: false
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    accessToken: default_token
+    executor:
+      appname: icc-executor
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:- } --- [%15.15t] [%X{turnId:--}][%X{convId:--}] %-40.40logger{39} : %m%n"
+  level:
+    root: WARN
+    cn.cloudcat.user.agent: INFO
+    cn.cloudcat.user.message.chat: INFO
+    cn.cloudcat.user.message.agent: INFO
+    cn.cloudcat: INFO
+    org.springframework: WARN
+    org.springframework.web: WARN
+    org.apache.ibatis: WARN
+    com.baomidou.mybatisplus: WARN
+    com.alibaba.druid: WARN
+    dev.langchain4j: WARN
+    org.elasticsearch: WARN
+    org.redisson: WARN

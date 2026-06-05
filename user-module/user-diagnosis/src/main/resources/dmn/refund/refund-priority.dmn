@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="refund_priority_defs"
+             name="Refund Priority"
+             namespace="http://cloudcat.cn/dmn/refund">
+
+  <decision id="refund_priority" name="Refund Priority">
+    <decisionTable id="refund_priority_table" hitPolicy="FIRST">
+      <input id="in_refund_processing" label="hasRefundProcessing">
+        <inputExpression typeRef="boolean"><text>hasRefundProcessing</text></inputExpression>
+      </input>
+      <input id="in_refund_done" label="hasRefundDone">
+        <inputExpression typeRef="boolean"><text>hasRefundDone</text></inputExpression>
+      </input>
+      <input id="in_refund_no_ticket" label="hasRefundNoTicket">
+        <inputExpression typeRef="boolean"><text>hasRefundNoTicket</text></inputExpression>
+      </input>
+      <input id="in_not_activated" label="hasNotActivated">
+        <inputExpression typeRef="boolean"><text>hasNotActivated</text></inputExpression>
+      </input>
+      <input id="in_not_realname" label="hasNotRealname">
+        <inputExpression typeRef="boolean"><text>hasNotRealname</text></inputExpression>
+      </input>
+
+      <output id="out_primary" label="primaryRootCause" name="primaryRootCause" typeRef="string"/>
+      <output id="out_label" label="label" name="label" typeRef="string"/>
+
+      <rule id="pri_refund_processing">
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"REFUND_PROCESSING"</text></outputEntry>
+        <outputEntry><text>"退款处理中"</text></outputEntry>
+      </rule>
+      <rule id="pri_refund_done">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"REFUND_DONE"</text></outputEntry>
+        <outputEntry><text>"退款已完成"</text></outputEntry>
+      </rule>
+      <rule id="pri_refund_no_ticket">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>true</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"REFUND_NO_TICKET"</text></outputEntry>
+        <outputEntry><text>"无退款工单"</text></outputEntry>
+      </rule>
+      <rule id="pri_unknown">
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <inputEntry><text>-</text></inputEntry>
+        <outputEntry><text>"UNKNOWN"</text></outputEntry>
+        <outputEntry><text>"退款咨询"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
