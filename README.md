@@ -1,6 +1,6 @@
 # cat-customer-agent
 
-云客猫智能客服（V2.1 基线）— Java 21 + Spring Boot 3.5 + Vue 3。
+智能客服（V2.1 基线）— Java 21 + Spring Boot 3.5 + Vue 3。
 
 ## 模块结构
 
